@@ -1,15 +1,16 @@
 package com.zlj.dao;
 
-import com.zlj.support.TransactionSynchronizationManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.util.unit.DataUnit;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
@@ -68,22 +69,14 @@ public class GoodsDao {
         }
     }
 
-    public int delete(int id) throws SQLException {
-        Connection conn = (Connection) TransactionSynchronizationManager.getResource(dataSource);
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = conn.prepareStatement("delete from goods where id = ?");
-            pstmt.setInt(1, id);
-            return pstmt.executeUpdate();
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
+    public void delete(int id) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.update("delete from goods where id = ?", new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setInt(1, id);
             }
-        }
+        });
     }
 
-    public static void main(String[] args) throws SQLException {
-        GoodsDao goodsDao = new GoodsDao();
-        goodsDao.save2();
-    }
 }

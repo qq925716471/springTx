@@ -1,16 +1,23 @@
 package com.zlj.service;
 
-import com.zlj.annotation.Transactional;
 import com.zlj.dao.GoodsDao;
 import com.zlj.dao.ItemDao;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
+import org.springframework.transaction.interceptor.RollbackRuleAttribute;
+import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @Slf4j
@@ -23,6 +30,10 @@ public class GoodsService {
     private ItemDao itemDao;
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private DataSourceTransactionManager dataSourceTransactionManager;
+    @Autowired
+    private ItemService itemService;
 
     public void delete(int goodsId) throws SQLException {
         Connection conn = dataSource.getConnection();
@@ -39,14 +50,30 @@ public class GoodsService {
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Throwable.class)
     public void delete2(int goodsId) throws SQLException {
         goodsDao.delete(5);
         itemDao.delete(5);
     }
 
-    public static void main(String[] args) throws SQLException {
-        GoodsService goodsService = new GoodsService();
-        goodsService.delete(1);
+    public void delete3(int goodsId) throws SQLException {
+        RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
+        rbta.getRollbackRules().add(new RollbackRuleAttribute(Exception.class));
+
+        TransactionTemplate transactionTemplate = new TransactionTemplate(dataSourceTransactionManager, rbta);
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus status) {
+                goodsDao.delete(goodsId);
+                itemDao.delete(goodsId);
+            }
+        });
     }
+
+    @Transactional(rollbackFor = Throwable.class)
+    public void delete4(int goodsId) throws SQLException {
+        goodsDao.delete(5);
+        itemService.delete(5);
+    }
+
 }

@@ -1,11 +1,14 @@
 package com.zlj.dao;
 
-import com.zlj.support.TransactionSynchronizationManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 @Component
 public class ItemDao {
@@ -25,17 +28,14 @@ public class ItemDao {
         }
     }
 
-    public int delete(int goodsId) throws SQLException {
-        Connection conn = (Connection) TransactionSynchronizationManager.getResource(dataSource);
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = conn.prepareStatement("delete from item where goods_id = ?");
-            pstmt.setInt(1, goodsId);
-            return pstmt.executeUpdate();
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
+    public void delete(int goodsId) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.update("delete from item where goods_id = ?", new PreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setInt(1, goodsId);
             }
-        }
+        });
     }
+
 }
