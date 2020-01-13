@@ -1,27 +1,27 @@
 package com.zlj.dao;
 
+import com.zlj.support.TransactionSynchronizationManager;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.unit.DataUnit;
 
+import javax.sql.DataSource;
 import java.sql.*;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
 @Slf4j
+@Component
 public class GoodsDao {
-    static {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");//加载数据库驱动
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+    @Autowired
+    private DataSource dataSource;
 
     public int save2() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "debian-sys-maint", "MTie2ZhYlrPxrSaw");//连接数据库
+        Connection conn = dataSource.getConnection();
         PreparedStatement pstmt = null;
-        PreparedStatement pstmt2 = null;
         ResultSet rs = null;
         try {
             conn.setAutoCommit(false);
@@ -32,10 +32,10 @@ public class GoodsDao {
             int id = 0;
             if (rs.next())
                 id = rs.getInt(1);
-            pstmt2 = conn.prepareStatement("insert into item (goods_id,name) value (?,?)");
-            pstmt2.setInt(1, id);
-            pstmt2.setString(2, "test");
-            pstmt2.executeUpdate();
+            pstmt = conn.prepareStatement("insert into item (goods_id,name) value (?,?)");
+            pstmt.setInt(1, id);
+            pstmt.setString(2, "test");
+            pstmt.executeUpdate();
             conn.commit();
             return id;
         } catch (Exception e) {
@@ -47,9 +47,6 @@ public class GoodsDao {
             }
             if (pstmt != null) {
                 pstmt.close();
-            }
-            if (pstmt2 != null) {
-                pstmt2.close();
             }
             if (rs != null) {
                 rs.close();
@@ -71,8 +68,8 @@ public class GoodsDao {
         }
     }
 
-    public int delete( int id) throws SQLException {
-        Connection conn = Datasource
+    public int delete(int id) throws SQLException {
+        Connection conn = (Connection) TransactionSynchronizationManager.getResource(dataSource);
         PreparedStatement pstmt = null;
         try {
             pstmt = conn.prepareStatement("delete from goods where id = ?");

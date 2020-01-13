@@ -19,16 +19,18 @@ public class TransactionIncepter {
             e.printStackTrace();
         }
     }
+
     @Around("@annotation(com.zlj.annotation.Transactional)")
-    public Object invokeWithTransaction(ProceedingJoinPoint joinPoint) throws SQLException {
+    public Object invokeWithTransaction(ProceedingJoinPoint joinPoint) throws Throwable {
         Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "debian-sys-maint", "MTie2ZhYlrPxrSaw");//连接数据库
 
         try {
             return joinPoint.proceed();
         } catch (Throwable e) {
-
+            throw e;
         } finally {
 
         }
+
     }
 }

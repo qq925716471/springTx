@@ -3,9 +3,12 @@ package com.zlj.service;
 import com.zlj.annotation.Transactional;
 import com.zlj.dao.GoodsDao;
 import com.zlj.dao.ItemDao;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,11 +16,16 @@ import java.sql.SQLException;
 @Slf4j
 @Service
 public class GoodsService {
-    private GoodsDao goodsDao = new GoodsDao();
-    private ItemDao itemDao = new ItemDao();
+    @Autowired
+
+    private GoodsDao goodsDao;
+    @Autowired
+    private ItemDao itemDao;
+    @Autowired
+    private DataSource dataSource;
 
     public void delete(int goodsId) throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "debian-sys-maint", "MTie2ZhYlrPxrSaw");//连接数据库
+        Connection conn = dataSource.getConnection();
         conn.setAutoCommit(false);
         try {
             goodsDao.delete(conn, 5);
@@ -33,10 +41,10 @@ public class GoodsService {
 
     @Transactional
     public void delete2(int goodsId) throws SQLException {
-        Database
-            goodsDao.delete(5);
-            itemDao.delete(5);
+        goodsDao.delete(5);
+        itemDao.delete(5);
     }
+
     public static void main(String[] args) throws SQLException {
         GoodsService goodsService = new GoodsService();
         goodsService.delete(1);
