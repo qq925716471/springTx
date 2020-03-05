@@ -1,0 +1,12 @@
+
+Dsquid:S1481"&Remove this unused "a" local variable.(ŠÒ‡ı8˜Ê¯øù-
+asquid:S3518"CMake sure this expression can't be zero before doing this division.(ŠÒ‡ı8‡«¯øù-
+squid:UselessImportCheck"eRemove this unused import 'org.springframework.transaction.support.TransactionCallbackWithoutResult'.(î–£Ú8¶²Ì÷ù-
+[squid:UselessImportCheck"0Remove this unused import 'java.sql.Connection'.(¥ËôÖ8õ×Ë÷ù-
+squid:UselessImportCheck
+"fRemove this unused import 'org.springframework.transaction.interceptor.RuleBasedTransactionAttribute'.(‘“£o8¶²Ì÷ù-
+squid:UselessImportCheck	"^Remove this unused import 'org.springframework.transaction.interceptor.RollbackRuleAttribute'.(‰»ïÓûÿÿÿÿ8¶²Ì÷ù-
+]squid:UselessImportCheck"2Remove this unused import 'java.sql.SQLException'.(ÛïÆŸ8§Í÷ù-
+ƒsquid:UselessImportCheck"XRemove this unused import 'org.springframework.transaction.support.TransactionTemplate'.(×¬§8¶²Ì÷ù-
+Ssquid:S1854"5Remove this useless assignment to local variable "a".(ŠÒ‡ı8˜Ê¯øù-
+ysquid:UselessImportCheck"NRemove this unused import 'org.springframework.transaction.TransactionStatus'.(ŸÙÏ¸8¶²Ì÷ù-

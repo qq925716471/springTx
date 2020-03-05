@@ -1,0 +1,9 @@
+
+«%squid:RedundantThrowsDeclarationCheck;"nRemove the declaration of thrown exception 'java.sql.SQLException', as it cannot be thrown from method's body.(œ›Û‚øÿÿÿÿ8âùùõù-
+«%squid:RedundantThrowsDeclarationCheckJ"nRemove the declaration of thrown exception 'java.sql.SQLException', as it cannot be thrown from method's body.(¹ÿÙşÿÿÿÿ8¬ŸÃøù-
+Lsquid:S1172&".Remove this unused method parameter "goodsId".(¶›Çå8­úõõù-
+¦%squid:RedundantThrowsDeclarationCheck6"nRemove the declaration of thrown exception 'java.sql.SQLException', as it cannot be thrown from method's body.(’Ò„8¬ŸÃøù-
+fsquid:S2095'"HUse try-with-resources or close this "Connection" in a "finally" clause.(şßÖ8­úõõù-
+”squid:UselessImportCheck"dRemove this unused import 'org.springframework.transaction.interceptor.DefaultTransactionAttribute'.(µèÉ¦ûÿÿÿÿ8›Ù¢öù-
+}squid:UselessImportCheck	"RRemove this unused import 'org.springframework.transaction.TransactionDefinition'.(›šĞá8›Ù¢öù-
+‘squid:UselessImportCheck"aRemove this unused import 'org.springframework.transaction.support.DefaultTransactionDefinition'.(¯½„úÿÿÿÿ8›Ù¢öù-
