@@ -36,8 +36,8 @@ public class GoodsService {
         Connection conn = dataSource.getConnection();
         conn.setAutoCommit(false);
         try {
-            goodsDao.delete(conn, 5);
-            itemDao.delete(conn, 5);
+            goodsDao.delete(conn, goodsId);
+            itemDao.delete(conn, goodsId);
             conn.commit();
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -49,11 +49,11 @@ public class GoodsService {
 
     @Transactional(rollbackFor = Throwable.class)
     public void delete2(int goodsId) throws SQLException {
-        goodsDao.delete(5);
-        itemDao.delete(5);
+        goodsDao.delete(goodsId);
+        itemDao.delete(goodsId);
     }
 
-    public void delete3(int goodsId) throws SQLException {
+    public void delete3(final int goodsId) throws SQLException {
         RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
         rbta.getRollbackRules().add(new RollbackRuleAttribute(Exception.class));
 

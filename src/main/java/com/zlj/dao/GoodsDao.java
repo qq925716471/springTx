@@ -24,8 +24,8 @@ public class GoodsDao {
         Connection conn = dataSource.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+        conn.setAutoCommit(false);
         try {
-            conn.setAutoCommit(false);
             pstmt = conn.prepareStatement("insert into goods (name) value (?)", RETURN_GENERATED_KEYS);
             pstmt.setString(1, "test");
             pstmt.executeUpdate();
@@ -43,14 +43,14 @@ public class GoodsDao {
             log.error(e.getMessage(), e);
             conn.rollback();
         } finally {
-            if (conn != null) {
-                conn.close();
+            if (rs != null) {
+                rs.close();
             }
             if (pstmt != null) {
                 pstmt.close();
             }
-            if (rs != null) {
-                rs.close();
+            if (conn != null) {
+                conn.close();
             }
         }
         return 0;
@@ -69,7 +69,7 @@ public class GoodsDao {
         }
     }
 
-    public void delete(int id) {
+    public void delete(final int id) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.update("delete from goods where id = ?", new PreparedStatementSetter() {
             @Override
