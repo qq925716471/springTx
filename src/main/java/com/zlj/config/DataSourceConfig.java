@@ -15,7 +15,7 @@ public class DataSourceConfig {
         ds.setDriverClassName("com.mysql.jdbc.Driver");
         ds.setUrl("jdbc:mysql://localhost:3306/test");
         ds.setUsername("root");
-        ds.setPassword("zhang111");
+        ds.setPassword("root");
         ds.setMaxActive(60);
         ds.setInitialSize(2);
         ds.setMaxWait(60000);

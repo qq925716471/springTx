@@ -28,7 +28,7 @@ public class ItemDao {
         }
     }
 
-    public void delete(int goodsId) {
+    public void delete(final int goodsId) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.update("delete from item where goods_id = ?", new PreparedStatementSetter() {
             @Override

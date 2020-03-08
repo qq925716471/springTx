@@ -21,7 +21,6 @@ import java.sql.SQLException;
 @Service
 public class GoodsService {
     @Autowired
-
     private GoodsDao goodsDao;
     @Autowired
     private ItemDao itemDao;
@@ -69,8 +68,8 @@ public class GoodsService {
 
     @Transactional(rollbackFor = Throwable.class)
     public void delete4(int goodsId) throws SQLException {
-        goodsDao.delete(5);
-        itemService.delete(5);
+        goodsDao.delete(goodsId);
+        itemService.delete(goodsId);
     }
 
 }
