@@ -9,10 +9,10 @@
 
 	<tx:annotation-driven order="#{ T(java.lang.Integer).MAX_VALUE }"/>
 
-	<bean id="transactionManager" class="org.springframework.tests.transaction.CallCountingTransactionManager"/>
+	<bean id="transactionManager" class="springframework.tests.transaction.CallCountingTransactionManager"/>
 
 	<bean id="testBean"
-		  class="org.springframework.transaction.annotation.AnnotationTransactionNamespaceHandlerTests$TransactionalTestBean"/>
+		  class="springframework.transaction.annotation.AnnotationTransactionNamespaceHandlerTests$TransactionalTestBean"/>
 
 	<context:mbean-export/>
 

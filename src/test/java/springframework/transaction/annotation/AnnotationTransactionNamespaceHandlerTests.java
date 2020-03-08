@@ -101,8 +101,10 @@ public class AnnotationTransactionNamespaceHandlerTests {
 	@Test
 	public void mBeanExportAlsoWorks() throws Exception {
 		MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+		CallCountingTransactionManager ptm = (CallCountingTransactionManager) context.getBean("transactionManager");
 		assertEquals("done",
 				server.invoke(ObjectName.getInstance("test:type=TestBean"), "doSomething", new Object[0], new String[0]));
+		assertEquals(1, ptm.begun);
 	}
 
 	@Test
@@ -144,6 +146,7 @@ public class AnnotationTransactionNamespaceHandlerTests {
 		}
 
 		@ManagedOperation
+		@Transactional
 		public String doSomething() {
 			return "done";
 		}
