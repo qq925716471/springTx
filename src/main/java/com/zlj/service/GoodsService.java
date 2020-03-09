@@ -67,7 +67,7 @@ public class GoodsService {
     }
 
     @Transactional(rollbackFor = Throwable.class)
-    public void delete4(int goodsId) throws SQLException {
+    public void delete4(int goodsId) {
         goodsDao.delete(goodsId);
         itemService.delete(goodsId);
     }
