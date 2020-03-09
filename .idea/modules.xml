@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/springTx.iml" filepath="$PROJECT_DIR$/springTx.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/springTx.iml" filepath="$PROJECT_DIR$/.idea/springTx.iml" />
       <module fileurl="file://$PROJECT_DIR$/springTx.iml" filepath="$PROJECT_DIR$/springTx.iml" />
     </modules>
