@@ -73,25 +73,6 @@ public class AnnotationDrivenTests {
 		assertEquals(2, tm2.commits);
 	}
 
-	@Test
-	@SuppressWarnings("resource")
-	public void serializableWithPreviousUsage() throws Exception {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("annotationDrivenProxyTargetClassTests.xml", getClass());
-		TransactionalService service = context.getBean("service", TransactionalService.class);
-		service.setSomething("someName");
-		service = (TransactionalService) SerializationTestUtils.serializeAndDeserialize(service);
-		service.setSomething("someName");
-	}
-
-	@Test
-	@SuppressWarnings("resource")
-	public void serializableWithoutPreviousUsage() throws Exception {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("annotationDrivenProxyTargetClassTests.xml", getClass());
-		TransactionalService service = context.getBean("service", TransactionalService.class);
-		service = (TransactionalService) SerializationTestUtils.serializeAndDeserialize(service);
-		service.setSomething("someName");
-	}
-
 
 	@SuppressWarnings("serial")
 	public static class TransactionCheckingInterceptor implements MethodInterceptor, Serializable {

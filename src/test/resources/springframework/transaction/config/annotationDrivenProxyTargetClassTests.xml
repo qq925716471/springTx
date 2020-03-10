@@ -10,17 +10,17 @@
 		<aop:advisor advice-ref="txCheckingInterceptor" pointcut="execution(* *..TransactionalService.*(..))" order="1"/>
 	</aop:config>
 
-	<bean id="txCheckingInterceptor" class="org.springframework.transaction.config.AnnotationDrivenTests$TransactionCheckingInterceptor"/>
+	<bean id="txCheckingInterceptor" class="springframework.transaction.config.AnnotationDrivenTests$TransactionCheckingInterceptor"/>
 
-	<bean id="transactionManager1" class="org.springframework.tests.transaction.CallCountingTransactionManager">
+	<bean id="transactionManager1" class="springframework.tests.transaction.CallCountingTransactionManager">
 		<qualifier value="synch"/>
 	</bean>
 
-	<bean id="transactionManager2" class="org.springframework.tests.transaction.CallCountingTransactionManager">
+	<bean id="transactionManager2" class="springframework.tests.transaction.CallCountingTransactionManager">
 		<property name="transactionSynchronizationName" value="SYNCHRONIZATION_NEVER"/>
 		<qualifier value="noSynch"/>
 	</bean>
 
-	<bean id="service" class="org.springframework.transaction.config.TransactionalService"/>
+	<bean id="service" class="springframework.transaction.config.TransactionalService"/>
 
 </beans>

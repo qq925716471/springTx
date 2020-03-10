@@ -30,6 +30,8 @@ public class GoodsService {
     private DataSourceTransactionManager dataSourceTransactionManager;
     @Autowired
     private ItemService itemService;
+    @Autowired
+    private TransactionTemplate transactionTemplate;
 
     public void delete(int goodsId) throws SQLException {
         Connection conn = dataSource.getConnection();

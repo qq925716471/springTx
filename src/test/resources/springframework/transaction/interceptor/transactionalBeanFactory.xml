@@ -3,12 +3,12 @@
 
 <beans>
 
-	<bean id="targetDependency" class="org.springframework.tests.sample.beans.TestBean">
+	<bean id="targetDependency" class="springframework.tests.transaction.TestBean">
 		<property name="name"><value>dependency</value></property>
 	</bean>
 
 	<!-- Simple target -->
-	<bean id="target" class="org.springframework.tests.sample.beans.DerivedTestBean" lazy-init="true">
+	<bean id="target" class="springframework.tests.transaction.DerivedTestBean" lazy-init="true">
 		<property name="name"><value>custom</value></property>
 		<property name="age"><value>666</value></property>
 		<property name="spouse"><ref local="targetDependency"/></property>
@@ -16,22 +16,22 @@
 
 	<bean id="debugInterceptor" class="org.springframework.aop.interceptor.DebugInterceptor"/>
 
-	<bean id="mockMan" class="org.springframework.transaction.interceptor.PlatformTransactionManagerFacade"/>
+	<bean id="mockMan" class="springframework.transaction.interceptor.PlatformTransactionManagerFacade"/>
 
 	<bean id="txInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
 		<property name="transactionManager"><ref local="mockMan"/></property>
 		<property name="transactionAttributeSource">
 			<value>
-				org.springframework.tests.sample.beans.ITestBean.s*=PROPAGATION_MANDATORY
-				org.springframework.tests.sample.beans.ITestBean.setAg*=PROPAGATION_REQUIRED
-				org.springframework.tests.sample.beans.ITestBean.set*= PROPAGATION_SUPPORTS , readOnly
+				springframework.tests.transaction.ITestBean.s*=PROPAGATION_MANDATORY
+				springframework.tests.transaction.ITestBean.setAg*=PROPAGATION_REQUIRED
+				springframework.tests.transaction.ITestBean.set*= PROPAGATION_SUPPORTS , readOnly
 			</value>
 		</property>
 	</bean>
 
 	<bean id="proxyFactory1" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="proxyInterfaces">
-			<value>org.springframework.tests.sample.beans.ITestBean</value>
+			<value>springframework.tests.transaction.ITestBean</value>
 		</property>
 		<property name="interceptorNames">
 			<list>
