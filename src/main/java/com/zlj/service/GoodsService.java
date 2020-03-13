@@ -10,7 +10,9 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.RollbackRuleAttribute;
 import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute;
+import org.springframework.transaction.interceptor.TransactionInterceptor;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.sql.DataSource;
@@ -71,7 +73,11 @@ public class GoodsService {
     @Transactional(rollbackFor = Throwable.class)
     public void delete4(int goodsId) {
         goodsDao.delete(goodsId);
-        itemService.delete(goodsId);
+        try {
+            itemService.delete(goodsId);
+        } catch (Exception e) {
+            TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
+        }
     }
 
 }

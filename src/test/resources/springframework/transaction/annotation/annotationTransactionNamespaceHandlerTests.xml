@@ -12,7 +12,7 @@
 	<bean id="transactionManager" class="springframework.tests.transaction.CallCountingTransactionManager"/>
 
 	<bean id="testBean"
-		  class="springframework.transaction.annotation.AnnotationTransactionNamespaceHandlerTests$TransactionalTestBean"/>
+		  class="springframework.tests.transaction.AnnotationTransactionNamespaceHandlerTests$TransactionalTestBean"/>
 
 	<context:mbean-export/>
 

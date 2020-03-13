@@ -34,13 +34,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 import org.springframework.transaction.config.TransactionManagementConfigUtils;
 import org.springframework.transaction.event.TransactionalEventListenerFactory;
+import springframework.tests.transaction.AnnotationTransactionNamespaceHandlerTests;
 import springframework.tests.transaction.CallCountingTransactionManager;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -56,6 +56,9 @@ import static org.junit.Assert.fail;
  */
 public class EnableTransactionManagementTests {
 
+	/**
+	 * 测试开启事务管理注解目标类能否被代理
+	 */
 	@Test
 	public void transactionProxyIsCreated() {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
@@ -67,6 +70,9 @@ public class EnableTransactionManagementTests {
 		ctx.close();
 	}
 
+	/**
+	 * 测试父类开启事务管理注解目标类能否被代理
+	 */
 	@Test
 	public void transactionProxyIsCreatedWithEnableOnSuperclass() {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
@@ -78,28 +84,9 @@ public class EnableTransactionManagementTests {
 		ctx.close();
 	}
 
-	@Test
-	public void transactionProxyIsCreatedWithEnableOnExcludedSuperclass() {
-		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
-				ParentEnableTxConfig.class, ChildEnableTxConfig.class, TxManagerConfig.class);
-		AnnotationTransactionNamespaceHandlerTests.TransactionalTestBean bean = ctx.getBean(AnnotationTransactionNamespaceHandlerTests.TransactionalTestBean.class);
-		assertTrue("testBean is not a proxy", AopUtils.isAopProxy(bean));
-		Map<?,?> services = ctx.getBeansWithAnnotation(Service.class);
-		assertTrue("Stereotype annotation not visible", services.containsKey("testBean"));
-		ctx.close();
-	}
-
-	@Test
-	public void txManagerIsResolvedOnInvocationOfTransactionalMethod() {
-		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
-				EnableTxConfig.class, TxManagerConfig.class);
-		AnnotationTransactionNamespaceHandlerTests.TransactionalTestBean bean = ctx.getBean(AnnotationTransactionNamespaceHandlerTests.TransactionalTestBean.class);
-
-		// invoke a transactional method, causing the PlatformTransactionManager bean to be resolved.
-		bean.findAllFoos();
-		ctx.close();
-	}
-
+	/**
+	 * 多事务配置默认事务
+	 */
 	@Test
 	public void txManagerIsResolvedCorrectlyWhenMultipleManagersArePresent() {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
@@ -112,8 +99,7 @@ public class EnableTransactionManagementTests {
 	}
 
 	/**
-	 * A cheap test just to prove that in ASPECTJ mode, the AnnotationTransactionAspect does indeed
-	 * get loaded -- or in this case, attempted to be loaded at which point the test fails.
+	 *  ASPECTJ mode
 	 */
 	@Test
 	public void proxyTypeAspectJCausesRegistrationOfAnnotationTransactionAspect() {
@@ -127,6 +113,9 @@ public class EnableTransactionManagementTests {
 		}
 	}
 
+	/**
+	 * 测试开启事务管理后事务事件监听是否注册
+	 */
 	@Test
 	public void transactionalEventListenerRegisteredProperly() {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(EnableTxConfig.class);
@@ -134,26 +123,6 @@ public class EnableTransactionManagementTests {
 		assertEquals(1, ctx.getBeansOfType(TransactionalEventListenerFactory.class).size());
 		ctx.close();
 	}
-
-	@Test
-	public void spr11915() {
-		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(Spr11915Config.class);
-		AnnotationTransactionNamespaceHandlerTests.TransactionalTestBean bean = ctx.getBean(AnnotationTransactionNamespaceHandlerTests.TransactionalTestBean.class);
-		CallCountingTransactionManager txManager = ctx.getBean("qualifiedTransactionManager", CallCountingTransactionManager.class);
-
-		bean.saveQualifiedFoo();
-		assertThat(txManager.begun, equalTo(1));
-		assertThat(txManager.commits, equalTo(1));
-		assertThat(txManager.rollbacks, equalTo(0));
-
-		bean.saveQualifiedFooWithAttributeAlias();
-		assertThat(txManager.begun, equalTo(2));
-		assertThat(txManager.commits, equalTo(2));
-		assertThat(txManager.rollbacks, equalTo(0));
-
-		ctx.close();
-	}
-
 
 	@Configuration
 	@EnableTransactionManagement

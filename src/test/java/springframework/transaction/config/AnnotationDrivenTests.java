@@ -39,12 +39,20 @@ import static org.junit.Assert.assertTrue;
  */
 public class AnnotationDrivenTests {
 
+	/**
+	 * xml配置测试
+	 * @throws Exception
+	 */
 	@Test
 	public void withProxyTargetClass() throws Exception {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("annotationDrivenProxyTargetClassTests.xml", getClass());
 		doTestWithMultipleTransactionManagers(context);
 	}
 
+	/**
+	 * 配置类测试
+	 * @throws Exception
+	 */
 	@Test
 	public void withConfigurationClass() throws Exception {
 		AnnotationConfigApplicationContext parent = new AnnotationConfigApplicationContext();

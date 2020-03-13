@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.RollbackRuleAttribute;
 import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute;
@@ -20,10 +21,10 @@ public class ItemService {
     @Autowired
     private ItemDao itemDao;
 
-    @Transactional(rollbackFor = Throwable.class)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Throwable.class)
     public void delete(int goodsId) {
         itemDao.delete(goodsId);
-        int a = 1/0;
+        int a = 1 / 0;
     }
 
 }
