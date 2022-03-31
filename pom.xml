@@ -14,7 +14,7 @@
     </parent>
 
     <properties>
-        <spring.version>4.3.19.RELEASE</spring.version>
+        <spring.version>5.3.18</spring.version>
     </properties>
     <dependencies>
         <dependency>
